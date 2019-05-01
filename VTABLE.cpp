@@ -7,6 +7,8 @@
 	Description:	This file contains test you can run in order to do VT 
 			Benchmarking, is free for use, with open license.
 	NOTES:		Try running with flags -O0, -O1, -O2, -O3, -Os
+			Try running with PHOTO_SIZE 100, 1000, 10000 etc.
+			(USE "ulimit -s unlimited" to increase stack size)
 
 *******************************************************************************/
 
