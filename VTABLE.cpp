@@ -5,7 +5,8 @@
 			
 	Author: 		Inbal Levi
 	Description:	This file contains test you can run in order to do VT 
-					Benchmarking, is free for use, with open license.
+			Benchmarking, is free for use, with open license.
+	NOTES:		Try running with flags -O0, -O1, -O2, -O3, -Os
 
 *******************************************************************************/
 
