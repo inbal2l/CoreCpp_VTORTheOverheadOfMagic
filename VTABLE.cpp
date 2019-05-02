@@ -99,7 +99,7 @@ int main()
     // printPhoto(photo);
     
     FilterA f1;  
-    clock_t begin = clock();
+    clock_t begin = clock();	// CPU Tickes 
 
     int i,j;
     for (i=0;i<PHOTO_SIZE;++i)
@@ -110,7 +110,7 @@ int main()
         }
     }
     
-    clock_t end = clock();
+    clock_t end = clock();	// CPU Tickes 
       
     printf("CRTP implementation: %lu\n", end - begin);
 
