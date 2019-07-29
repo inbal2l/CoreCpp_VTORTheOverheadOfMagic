@@ -15,9 +15,9 @@
 #include <iostream>
 #include <ctime>
 
-using namespace std;        // (shouldn't...)
+using namespace std;        // You shouldn't
 
-#define PHOTO_SIZE 10000
+#define PHOTO_SIZE 1000
 
 void initPhoto(int photo[][PHOTO_SIZE])
 {
@@ -92,7 +92,7 @@ int main()
     initPhoto(photo);
     // printPhoto(photo);
 
-    FilterV fv;
+    BaseFilterVirtual * pt_fv = new FilterV();
     clock_t Vbegin = clock();
 
     int vi,vj;
@@ -100,7 +100,7 @@ int main()
     {
         for (vj=0;vj<PHOTO_SIZE;++vj)
         {
-            fv.Activate(&photo[vi][vj]);
+            pt_fv->Activate(&photo[vi][vj]);
         }
     }
     
@@ -109,6 +109,7 @@ int main()
     cout <<"Vtable implementation: "<< Vend - Vbegin << endl;
 
     BaseFilter<FilterDerived> fc;
+    BaseFilter<FilterDerived> * pt_fc = &fc;
 
     clock_t Cbegin = clock();
 
@@ -117,7 +118,7 @@ int main()
     {
         for (j=0;j<PHOTO_SIZE;++j)
         {
-            fc.Activate(&photo[i][j]);  
+            pt_fc->Activate(&photo[i][j]);  
         }
     }
     
