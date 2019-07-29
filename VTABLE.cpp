@@ -13,109 +13,86 @@
 *******************************************************************************/
 
 #include <iostream>
-using namespace std;
 #include <ctime>
 
-#define PHOTO_SIZE 100
-typedef unsigned char PIXEL;
+using namespace std;        // (shouldn't...)
 
+#define PHOTO_SIZE 10000
 
-void initPhoto(PIXEL photo[][PHOTO_SIZE])
+void initPhoto(int photo[][PHOTO_SIZE])
 {
     int i,j;
     for (i=0;i<PHOTO_SIZE;++i)
     {
         for (j=0;j<PHOTO_SIZE;++j)
         {
-           photo[i][j]= (PIXEL) rand();
+           photo[i][j]= (unsigned char) rand();
         }
     }
 }
 
-void printPhoto(PIXEL photo[][PHOTO_SIZE])
+void printPhoto(int photo[][PHOTO_SIZE])
 {
     int i,j;
     for (i=0;i<PHOTO_SIZE;++i)
     {
         for (j=0;j<PHOTO_SIZE;++j)
         {
-           printf(" %d ", photo[i][j]);
+           cout<<" %d "<< photo[i][j];
         }
-        printf("\n");
+        cout <<"\n";
     }
 }
-
-
 
 template <class DerivedFilter>
 class BaseFilter
 {
 public:
-    inline void Activate(PIXEL *pixel)
+    constexpr void Activate(int *pixel)
     {
         static_cast<DerivedFilter*>(this)->ImplementFilter(pixel);
     }
 };
 
-class FilterA : public BaseFilter<FilterA>
+class FilterDerived : public BaseFilter<FilterDerived>
 {
 public:
-    inline void ImplementFilter(PIXEL *pixel)
+    constexpr void ImplementFilter(int *pixel)
     {
+        //cout << "FilterA implementation" << endl;
         *pixel-=1;
     }
 };
 
-
-
-
-class BaseFilterVirtual
+class BaseFilterVirtual 
 {
 public:
-    virtual inline void Activate(PIXEL *pixel)
+    virtual inline void Activate(int *pixel) const
     {
         cout << "BaseFilterVirtual Activate" <<endl;
     }
+    virtual ~BaseFilterVirtual() = default;
 };
 
 
-class FilterB : public BaseFilterVirtual
+class FilterV : public BaseFilterVirtual
 {
 public:
-    virtual inline void Activate(PIXEL *pixel)
+    virtual inline void Activate(int *pixel) const override
     {
+        //cout << "FilterV implementation" << endl;
         *pixel-=1;
     }
-
 };
-
-
 
 int main()
 {
-    PIXEL photo[PHOTO_SIZE][PHOTO_SIZE];
+    int photo[PHOTO_SIZE][PHOTO_SIZE];
     
     initPhoto(photo);
     // printPhoto(photo);
-    
-    FilterA f1;  
-    clock_t begin = clock();	// CPU Tickes 
 
-    int i,j;
-    for (i=0;i<PHOTO_SIZE;++i)
-    {
-        for (j=0;j<PHOTO_SIZE;++j)
-        {
-            f1.Activate(&photo[i][j]);  // Prints "Derived implementation"
-        }
-    }
-    
-    clock_t end = clock();	// CPU Tickes 
-      
-    printf("CRTP implementation: %lu\n", end - begin);
-
-    
-    BaseFilterVirtual *f2 = new FilterB();  
+    FilterV fv;
     clock_t Vbegin = clock();
 
     int vi,vj;
@@ -123,16 +100,28 @@ int main()
     {
         for (vj=0;vj<PHOTO_SIZE;++vj)
         {
-            f2->Activate(&photo[vi][vj]);  // Prints "Derived implementation"
+            fv.Activate(&photo[vi][vj]);
         }
     }
     
     clock_t Vend = clock();
       
-    printf("Vtable implementation: %lu\n", Vend - Vbegin);
+    cout <<"Vtable implementation: "<< Vend - Vbegin << endl;
 
+    BaseFilter<FilterDerived> fc;
 
+    clock_t Cbegin = clock();
 
+    int i,j;
+    for (i=0;i<PHOTO_SIZE;++i)
+    {
+        for (j=0;j<PHOTO_SIZE;++j)
+        {
+            fc.Activate(&photo[i][j]);  
+        }
+    }
     
-    return 0;
+    clock_t Cend = clock();
+
+    cout <<"CRTP implementation: "<< Cend - Cbegin << endl;
 }
