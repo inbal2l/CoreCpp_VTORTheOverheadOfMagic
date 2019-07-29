@@ -1,0 +1,44 @@
+
+g++ O0:
+------
+Vtable implementation: 310630
+CRTP implementation: 1020771
+
+g++ O1:
+------
+Vtable implementation: 156937
+CRTP implementation: 49819
+
+g++ O2:
+------
+Vtable implementation: 68210
+CRTP implementation: 51286
+
+g++ O3:
+------
+Vtable implementation: 58105
+CRTP implementation: 38782
+
+
+clang++ O0:
+-----------
+Vtable implementation: 267864
+CRTP implementation: 441750
+
+
+clang++ O1:
+-----------
+Vtable implementation: 145095
+CRTP implementation: 147441
+
+
+clang++ O2:
+-----------
+Vtable implementation: 173430
+CRTP implementation: 40072
+
+
+clang++ O3:
+-----------
+Vtable implementation: 167029
+CRTP implementation: 37015
