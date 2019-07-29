@@ -105,7 +105,7 @@ int main()
     }
     
     clock_t Vend = clock();
-      
+    delete ft_fv;      
     cout <<"Vtable implementation: "<< Vend - Vbegin << endl;
 
     BaseFilter<FilterDerived> fc;
