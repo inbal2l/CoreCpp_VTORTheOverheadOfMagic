@@ -15,7 +15,7 @@
 #include <iostream>
 #include <ctime>
 
-using namespace std;        // You shouldn't
+using namespace std;        // (shouldn't...)
 
 #define PHOTO_SIZE 1000
 
