@@ -125,4 +125,26 @@ int main()
     clock_t Cend = clock();
 
     cout <<"CRTP implementation: "<< Cend - Cbegin << endl;
+	
+	
+    pixel_t photoS[PHOTO_SIZE][PHOTO_SIZE];		// Recreating the photo as pixel_t type
+    
+    var_t filter{FilterBright()};
+    int Si,Sj;
+    clock_t Sbegin = clock();
+
+    for (Si=0;Si<PHOTO_SIZE;++Si)
+    {
+        for (Sj=0;Sj<PHOTO_SIZE;++Sj)
+        {
+            std::visit (overload{
+        [](FilterBright f, int& pixel)  { pixel+=1; cout << "Filter Bright "; },
+        [](FilterDark f, int& pixel)  {  pixel-=1; cout << "Filter Bright ";  },
+        }, filter, photoS[Si][Sj]);
+        }
+    }
+    
+    clock_t Send = clock();
+
+    cout <<"Visitor implementation: "<< Send - Sbegin << endl;
 }
