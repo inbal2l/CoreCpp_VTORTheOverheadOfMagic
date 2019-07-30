@@ -127,7 +127,7 @@ int main()
     cout <<"CRTP implementation: "<< Cend - Cbegin << endl;
 	
 	
-    pixel_t photoS[PHOTO_SIZE][PHOTO_SIZE];		// Recreating the photo as pixel_t type
+    pixel_t photoS[PHOTO_SIZE][PHOTO_SIZE];		// Recreating a photo as pixel_t type
     
     var_t filter{FilterBright()};
     int Si,Sj;
@@ -138,8 +138,8 @@ int main()
         for (Sj=0;Sj<PHOTO_SIZE;++Sj)
         {
             std::visit (overload{
-        [](FilterBright f, int& pixel)  { pixel+=1; cout << "Filter Bright "; },
-        [](FilterDark f, int& pixel)  {  pixel-=1; cout << "Filter Bright ";  },
+        [](FilterBright f, int& pixel)  { pixel+=1; },
+        [](FilterDark f, int& pixel)  {  pixel-=1;  },
         }, filter, photoS[Si][Sj]);
         }
     }
