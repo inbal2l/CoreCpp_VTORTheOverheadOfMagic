@@ -43,6 +43,16 @@ void printPhoto(int photo[][PHOTO_SIZE])
         cout <<"\n";
     }
 }
+ 
+class FilterBright{};
+class FilterDark{};
+
+using Pixel = int;
+using var_t = std::variant<FilterBright, FilterDark>;
+using pixel_t = std::variant<Pixel>;
+
+template<class... Ts> struct overload : Ts... { using Ts::operator()...; };
+template<class... Ts> overload(Ts...) -> overload<Ts...>;
 
 template <class DerivedFilter>
 class BaseFilter
@@ -105,7 +115,7 @@ int main()
     }
     
     clock_t Vend = clock();
-    delete ft_fv;      
+    delete pt_fv;      
     cout <<"Vtable implementation: "<< Vend - Vbegin << endl;
     
     FilterDerived fc;
@@ -131,17 +141,18 @@ int main()
     
     var_t filter{FilterBright()};
     int Si,Sj;
+	
     clock_t Sbegin = clock();
 
     for (Si=0;Si<PHOTO_SIZE;++Si)
     {
         for (Sj=0;Sj<PHOTO_SIZE;++Sj)
-        {
-            std::visit (overload{
-        [](FilterBright f, int& pixel)  { pixel+=1; },
-        [](FilterDark f, int& pixel)  {  pixel-=1;  },
-        }, filter, photoS[Si][Sj]);
-        }
+	{
+		std::visit (overload{
+        		[](FilterBright f, Pixel& pixel)  { pixel+=1; },
+        		[](FilterDark f, Pixel& pixel)  {  pixel-=1;  },
+        	}, filter, photoS[Si][Sj]);
+    	}
     }
     
     clock_t Send = clock();
